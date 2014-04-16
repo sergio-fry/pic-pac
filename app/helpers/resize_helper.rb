@@ -1,0 +1,2 @@
+module ResizeHelper
+end
