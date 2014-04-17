@@ -1,5 +1,11 @@
 PicPac::Application.routes.draw do
+  root 'resize#index'
   get "resize" => "resize#resize"
+
+  scope path: "/api/u9832fn8we9fhwe9mg8hwe8gn9" do
+    post "run_delayed_jobs" => "resize#run_delayed_jobs"
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
