@@ -51,4 +51,5 @@ gem 'fog'
 group :production do
   gem 'pg'
   gem 'rack-cache'
+  gem 'unicorn'
 end
