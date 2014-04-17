@@ -5,7 +5,6 @@ gem 'rails', '4.0.1'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', :group => :development
-gem 'pg', :group => :production
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
@@ -48,3 +47,8 @@ end
 gem "delayed_job_active_record"
 gem "rmagick"
 gem 'fog'
+
+group :production do
+  gem 'pg'
+  gem 'rack-cache'
+end

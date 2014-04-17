@@ -12,7 +12,12 @@ class ResizeController < ApplicationController
       @picture.delay.resize(params[:w])
     end
 
-    redirect_to @picture.dst_url || params[:src]
+    if @picture.dst_url
+      expires_in(1.day, public: true) if Rails.env.production?
+      redirect_to @picture.dst_url
+    else
+      redirect_to params[:src]
+    end
   rescue Exception => e
     rails.logger.error e
 
