@@ -12,7 +12,7 @@ class Picture < ActiveRecord::Base
 
     logger.debug "upload..."
     bucket = AWS_STORE.directories.get ENV['S3_BUCKET_NAME']
-    bucket.files.create(:key => "resized/#{id}/#{hash}.jpeg", :body => img.to_blob, :public => true)
+    bucket.files.create(:key => "resized/#{id}/#{hash}.jpeg", :body => img.to_blob{ self.quality=65;  self.interlace = Magick::PlaneInterlace }, :public => true)
 
     self.dst_url = "https://s3-eu-west-1.amazonaws.com/pic-pac/resized/#{id}/#{hash}.jpeg"
     save!
