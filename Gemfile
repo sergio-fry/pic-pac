@@ -52,4 +52,5 @@ group :production do
   gem 'pg'
   gem 'rack-cache'
   gem 'unicorn'
+  gem 'newrelic_rpm'
 end
