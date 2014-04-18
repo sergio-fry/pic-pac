@@ -6,10 +6,13 @@ class ResizeController < ApplicationController
   end
 
   def resize
-    @picture = Picture.find_or_create_by(:src_url => params[:src], :transformtaion => "w=#{params[:w].to_i}")
+    transformtaion = "w=#{params[:w].to_i}"
+    transformtaion += "h=#{params[:h].to_i}" if params[:h].present?
+
+    @picture = Picture.find_or_create_by(:src_url => params[:src], :transformtaion => transformtaion)
 
     if @picture.dst_url.blank?
-      @picture.delay.resize(params[:w])
+      @picture.delay.resize(params[:w], params[:h])
     end
 
     if @picture.dst_url

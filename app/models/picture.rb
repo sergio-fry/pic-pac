@@ -3,11 +3,18 @@ require 'open-uri'
 require 'digest/sha1'
 
 class Picture < ActiveRecord::Base
-  def resize(width)
+  def resize(width, height=nil)
     img = Magick::Image.read(src_url)[0]
     img.format = "JPEG"
-    logger.debug "resizing..."
-    img.resize_to_fit!(width.to_i, width.to_i)
+
+
+    if height.present?
+      logger.debug "cropping..."
+      img.resize_to_fill!(width.to_i, height.to_i)
+    else
+      logger.debug "resizing..."
+      img.resize_to_fit!(width.to_i, width.to_i)
+    end
 
 
     logger.debug "upload..."
