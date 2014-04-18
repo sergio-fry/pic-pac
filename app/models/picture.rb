@@ -4,16 +4,18 @@ require 'digest/sha1'
 
 class Picture < ActiveRecord::Base
   def resize(width, height=nil)
+    width, height = width.to_i, height.try(:to_i)
     img = Magick::Image.read(src_url)[0]
     img.format = "JPEG"
 
 
     if height.present?
       logger.debug "cropping..."
-      img.resize_to_fill!(width.to_i, height.to_i)
+      img.resize_to_fit!([width, height].max, [width, height].max)
+      img.resize_to_fill!(width, height)
     else
       logger.debug "resizing..."
-      img.resize_to_fit!(width.to_i, width.to_i)
+      img.resize_to_fit!(width, width)
     end
 
 
