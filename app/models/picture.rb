@@ -41,7 +41,7 @@ class Picture < ActiveRecord::Base
   private
 
   def hash
-    Digest::SHA1.hexdigest(id.to_s + PicPac::Application.config.secret_key_base)[0..5]
+    Digest::SHA1.hexdigest(id.to_s + PicPac::Application.config.secret_key_base + created_at.to_i.to_s)[0..5]
   end
 
   def erase_file
