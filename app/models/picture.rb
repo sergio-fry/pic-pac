@@ -11,7 +11,16 @@ class Picture < ActiveRecord::Base
 
     if height.present?
       logger.debug "cropping..."
-      img.resize_to_fit!([width, height].max, [width, height].max)
+
+      src_ratio = img.columns.to_f / img.rows.to_f
+      target_ratio = width.to_f / height.to_f
+
+      if target_ratio > src_ratio
+        img.resize_to_fill!(img.columns, (img.rows.to_f/target_ratio.to_f).round)
+      else
+        img.resize_to_fill!((target_ratio*img.rows).round, img.rows)
+      end
+
       img.resize_to_fill!(width, height)
     else
       logger.debug "resizing..."
