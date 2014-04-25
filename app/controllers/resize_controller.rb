@@ -27,6 +27,7 @@ class ResizeController < ApplicationController
 
     redirect_to params[:src]
   end
+=begin
 
   def delete_unused
     Picture.destroy_all(["last_access_time < ?", 30.days.ago])
@@ -41,6 +42,7 @@ class ResizeController < ApplicationController
   rescue Exception => $e
     render :text => "Error: #{$e}"
   end
+=end
 
   def run_delayed_jobs
     t = Time.now
