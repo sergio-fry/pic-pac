@@ -23,7 +23,7 @@ class ResizeController < ApplicationController
       redirect_to params[:src]
     end
   rescue Exception => e
-    rails.logger.error e
+    Rails.logger.error e
 
     redirect_to params[:src]
   end
