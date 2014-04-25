@@ -30,10 +30,16 @@ class ResizeController < ApplicationController
 
   def delete_unused
     Picture.destroy_all("last_access_time < ?", 30.days.ago)
+    render :text => "OK"
+  rescue Exception => $e
+    render :text => "Error: #{$e}"
   end
 
   def update_metrics
     Metric.add_data_point("Picture.count", Time.now, Picture.count)
+    render :text => "OK"
+  rescue Exception => $e
+    render :text => "Error: #{$e}"
   end
 
   def run_delayed_jobs
