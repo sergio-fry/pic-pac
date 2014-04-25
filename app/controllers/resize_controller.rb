@@ -16,6 +16,7 @@ class ResizeController < ApplicationController
     end
 
     if @picture.dst_url
+      @picture.update_attribute(:last_access_time, Time.now)
       expires_in(10.days, public: true) if Rails.env.production?
       redirect_to @picture.dst_url
     else
@@ -25,6 +26,10 @@ class ResizeController < ApplicationController
     rails.logger.error e
 
     redirect_to params[:src]
+  end
+
+  def delete_unused
+    Picture.destroy_all("last_access_time < ?", 30.days.ago)
   end
 
   def run_delayed_jobs

@@ -4,6 +4,7 @@ PicPac::Application.routes.draw do
 
   scope path: "/api/u9832fn8we9fhwe9mg8hwe8gn9" do
     post "run_delayed_jobs" => "resize#run_delayed_jobs"
+    post "delete_unused" => "resize#delete_unused"
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

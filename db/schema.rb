@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140417051020) do
+ActiveRecord::Schema.define(version: 20140425094304) do
 
   create_table "delayed_jobs", force: true do |t|
     t.integer  "priority",   default: 0, null: false
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20140417051020) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "transformtaion"
+    t.datetime "last_access_time"
   end
 
   add_index "pictures", ["src_url", "transformtaion"], name: "index_pictures_on_src_url_and_transformtaion", unique: true
