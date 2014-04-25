@@ -53,4 +53,5 @@ group :production do
   gem 'rack-cache'
   gem 'unicorn'
   gem 'newrelic_rpm'
+  gem 'rollbar'
 end

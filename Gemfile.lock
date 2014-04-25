@@ -110,6 +110,8 @@ GEM
       json (~> 1.4)
     ref (1.0.5)
     rmagick (2.13.2)
+    rollbar (0.12.9)
+      multi_json (~> 1.3)
     sass (3.2.19)
     sass-rails (4.0.3)
       railties (>= 4.0.0, < 5.0)
@@ -163,6 +165,7 @@ DEPENDENCIES
   rack-cache
   rails (= 4.0.1)
   rmagick
+  rollbar
   sass-rails (~> 4.0.0)
   sdoc
   sqlite3
