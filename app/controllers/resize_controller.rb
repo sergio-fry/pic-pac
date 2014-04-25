@@ -1,5 +1,5 @@
 class ResizeController < ApplicationController
-  skip_before_action :verify_authenticity_token, :only => [:run_delayed_jobs]
+  skip_before_action :verify_authenticity_token, :only => [:run_delayed_jobs, :update_metrics, :delete_unused]
 
   def index
     @pictures = Picture.where("dst_url IS NOT NULL").order("created_at DESC").limit(30)
@@ -29,7 +29,7 @@ class ResizeController < ApplicationController
   end
 
   def delete_unused
-    Picture.destroy_all("last_access_time < ?", 30.days.ago)
+    Picture.destroy_all(["last_access_time < ?", 30.days.ago])
     render :text => "OK"
   rescue Exception => $e
     render :text => "Error: #{$e}"
