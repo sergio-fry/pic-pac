@@ -17,7 +17,7 @@ class ResizeController < ApplicationController
 
     if @picture.dst_url
       @picture.update_attribute(:last_access_time, Time.now)
-      expires_in(10.days, public: true) if Rails.env.production?
+      expires_in(1.days, public: true) if Rails.env.production?
       redirect_to @picture.dst_url
     else
       redirect_to params[:src]
