@@ -1,5 +1,9 @@
-<h1>Последнее</h1>
+<h2>Динамика</h2>
+<%= metric_graph(Metric.find_by(key: "Picture.count")) %>
+
+<h2>Последнее</h2>
 
 <% for picture in @pictures %>
   <%= image_tag picture.dst_url %>
 <% end %>
+
