@@ -1,11 +1,6 @@
-<h2>Всего</h2>
-<%= metric_graph(Metric.find_by(key: "Picture.count")) %>
+<h2>Динамика</h2>
+<%= simple_metric_graph(["Picture.count", "Всего"], ["Picture.count(1.week)", "Использовалось за 7 дней"], ["Picture.count(2.week)", "Использовалось за 14 дней"]) %>
 
-<h2>Использовались за 7 дней</h2>
-<%= metric_graph(Metric.find_by(key: "Picture.count(1.week)")) %>
-
-<h2>Использовались за 2 недели</h2>
-<%= metric_graph(Metric.find_by(key: "Picture.count(2.weeks)")) %>
 
 <h2>Последнее</h2>
 

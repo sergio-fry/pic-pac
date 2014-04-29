@@ -55,3 +55,5 @@ group :production do
   gem 'newrelic_rpm'
   gem 'rollbar'
 end
+
+gem 'simple_metric'
