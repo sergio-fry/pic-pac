@@ -39,6 +39,7 @@ class ResizeController < ApplicationController
     SimpleMetric::Metric.add_data_point("Picture.count", Time.now, Picture.count)
     SimpleMetric::Metric.add_data_point("Picture.count(1.week)", Time.now, Picture.where(["last_access_time > ?", 1.week.ago]).count)
     SimpleMetric::Metric.add_data_point("Picture.count(2.weeks)", Time.now, Picture.where(["last_access_time > ?", 2.weeks.ago]).count)
+    SimpleMetric::Metric.add_data_point("Picture.count(3.weeks)", Time.now, Picture.where(["last_access_time > ?", 3.weeks.ago]).count)
     render :text => "OK"
   rescue Exception => $e
     render :text => "Error: #{$e}"
