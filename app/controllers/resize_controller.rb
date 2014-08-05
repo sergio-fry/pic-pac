@@ -29,7 +29,10 @@ class ResizeController < ApplicationController
   end
 
   def delete_unused
-    Picture.destroy_all(["last_access_time < ?", 30.days.ago])
+    Picture.where(["last_access_time < ?", 30.days.ago]).each do |picture|
+      picture.delay(:priority => 20).destroy
+    end
+
     render :text => "OK"
   rescue Exception => $e
     render :text => "Error: #{$e}"
