@@ -51,12 +51,20 @@ class ResizeController < ApplicationController
   def run_delayed_jobs
     t = Time.now
 
-    loop do
-      break if t < 20.seconds.ago
-      results = Delayed::Worker.new.work_off(1) rescue nil
+    threads = []
 
-      break if results.sum == 0
+    10.times do
+      threads << Thread.new do
+        loop do
+          break if t < 40.seconds.ago
+          jobs_done_count = Delayed::Worker.new.work_off(1).try(:sum) rescue 0
+
+          break if jobs_done_count == 0
+        end
+      end
     end
+
+    threads.each(&:join)
 
     render :text => "OK. Jobs left: #{Delayed::Job.count}"
   rescue Exception => $e
