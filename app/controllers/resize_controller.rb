@@ -53,11 +53,18 @@ class ResizeController < ApplicationController
 
     threads = []
 
+    worker = Delayed::Worker.new
+
     10.times do
       threads << Thread.new do
         loop do
           break if t < 40.seconds.ago
-          jobs_done_count = Delayed::Worker.new.work_off(1).try(:sum) rescue 0
+          jobs_done_count = begin
+                              worker.work_off(1).try(:sum)
+                            rescue StandardError => ex
+                              logger.error ex.to_s
+                              0
+                            end
 
           break if jobs_done_count == 0
         end
