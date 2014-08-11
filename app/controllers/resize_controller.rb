@@ -29,7 +29,7 @@ class ResizeController < ApplicationController
   end
 
   def delete_unused
-    Picture.where(["created_at < ? AND (last_access_time IS NULL OR last_access_time < ?)", 1.day, 30.days.ago]).each do |picture|
+    Picture.where(["created_at < ? AND (last_access_time IS NULL OR last_access_time < ?)", 1.day.ago, 30.days.ago]).each do |picture|
       Cleaner.perform_async(picture.id)
     end
 
