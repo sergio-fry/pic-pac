@@ -12,7 +12,7 @@ before_fork do |server, worker|
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
 
-  @sidekiq_pid ||= spawn(cmd="bundle exec sidekiq -C #{File.join(Rails.root, "config/sidekiq.yml")}")
+  @sidekiq_pid ||= spawn("bundle exec sidekiq -c 5 -q hight_priority,3 -q default")
 end
 
 after_fork do |server, worker|
