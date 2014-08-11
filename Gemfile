@@ -44,7 +44,6 @@ end
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem "delayed_job_active_record"
 gem "rmagick"
 gem 'fog'
 
@@ -57,3 +56,8 @@ group :production do
 end
 
 gem 'simple_metric'
+
+gem 'sidekiq'
+gem 'sinatra', require: false
+#gem 'slim'
+gem 'sidekiq-middleware'

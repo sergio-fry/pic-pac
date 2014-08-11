@@ -12,7 +12,7 @@ class ResizeController < ApplicationController
     @picture = Picture.find_or_create_by(:src_url => params[:src], :transformtaion => transformtaion)
 
     if @picture.dst_url.blank?
-      @picture.delay.resize(params[:w], params[:h])
+      Resizer.perform_async(@picture.id, params[:w], params[:h])
     end
 
     if @picture.dst_url
@@ -29,8 +29,8 @@ class ResizeController < ApplicationController
   end
 
   def delete_unused
-    Picture.where(["last_access_time < ?", 30.days.ago]).each do |picture|
-      picture.delay(:priority => 20).destroy
+    Picture.where(["created_at < ? AND (last_access_time IS NULL OR last_access_time < ?)", 1.day, 30.days.ago]).each do |picture|
+      Cleaner.perform_async(picture.id)
     end
 
     render :text => "OK"
@@ -44,36 +44,6 @@ class ResizeController < ApplicationController
     SimpleMetric::Metric.add_data_point("Picture.count(2.weeks)", Time.now, Picture.where(["last_access_time > ?", 2.weeks.ago]).count)
     SimpleMetric::Metric.add_data_point("Picture.count(3.weeks)", Time.now, Picture.where(["last_access_time > ?", 3.weeks.ago]).count)
     render :text => "OK"
-  rescue Exception => $e
-    render :text => "Error: #{$e}"
-  end
-
-  def run_delayed_jobs
-    t = Time.now
-
-    threads = []
-
-    worker = Delayed::Worker.new
-
-    10.times do
-      threads << Thread.new do
-        loop do
-          break if t < 40.seconds.ago
-          jobs_done_count = begin
-                              worker.work_off(1).try(:sum)
-                            rescue StandardError => ex
-                              logger.error ex.to_s
-                              0
-                            end
-
-          break if jobs_done_count == 0
-        end
-      end
-    end
-
-    threads.each(&:join)
-
-    render :text => "OK. Jobs left: #{Delayed::Job.count}"
   rescue Exception => $e
     render :text => "Error: #{$e}"
   end

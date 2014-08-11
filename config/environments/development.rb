@@ -26,4 +26,12 @@ PicPac::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
+  Sidekiq.configure_server do |config|
+    config.redis = { :namespace => 'pic-jobs' }
+  end 
+
+  Sidekiq.configure_client do |config|
+    config.redis = { :namespace => 'pic-jobs' }
+  end
 end

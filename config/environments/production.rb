@@ -84,4 +84,14 @@ PicPac::Application.configure do
     :entitystore  => "heap:/",
   }
   config.static_cache_control = "public, max-age=2592000"
+
+  if ENV['REDIS_PROVIDER'].present?
+    Sidekiq.configure_server do |config|
+      config.redis = { :url => ENV['REDIS_PROVIDER'], :namespace => 'pic-jobs' }
+    end 
+
+    Sidekiq.configure_client do |config|
+      config.redis = { :url => ENV['REDIS_PROVIDER'], :namespace => 'pic-jobs' }
+    end 
+  end
 end

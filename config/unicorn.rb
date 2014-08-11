@@ -1,6 +1,6 @@
 # config/unicorn.rb
 worker_processes Integer(ENV["WEB_CONCURRENCY"] || 3)
-timeout 60
+timeout 30
 preload_app true
 
 before_fork do |server, worker|
@@ -11,6 +11,8 @@ before_fork do |server, worker|
 
   defined?(ActiveRecord::Base) and
     ActiveRecord::Base.connection.disconnect!
+
+  @sidekiq_pid ||= spawn("bundle exec sidekiq -c 5")
 end
 
 after_fork do |server, worker|

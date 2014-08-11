@@ -1,3 +1,5 @@
+require 'sidekiq/web'
+
 PicPac::Application.routes.draw do
   root 'resize#index'
   get "resize" => "resize#resize"
@@ -7,6 +9,8 @@ PicPac::Application.routes.draw do
     post "delete_unused" => "resize#delete_unused"
     post "update_metrics" => "resize#update_metrics"
   end
+
+  mount Sidekiq::Web, at: "/sidekiq"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
